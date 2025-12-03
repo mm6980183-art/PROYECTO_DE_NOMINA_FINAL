@@ -1,4 +1,4 @@
-import './auth.css'
+import './downloads.css'
 
 const DownloadsPage =() =>{
     return (

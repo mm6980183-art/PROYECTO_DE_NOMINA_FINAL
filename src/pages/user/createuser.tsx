@@ -1,4 +1,4 @@
-import './auth.css'
+import './createuser.css'
 
 const CreateUser = () =>{
     return (
