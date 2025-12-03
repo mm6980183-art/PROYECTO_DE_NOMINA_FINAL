@@ -1,32 +1,35 @@
 import './downloads.css'
+import { Link } from 'react-router-dom'
 
-const DownloadsPage =() =>{
+const DownloadsPage = () => {
     return (
-          <div className="container">
-    <div className="left"></div>
+        <div className="container">
+            <div className="left"></div>
 
-    <div className="right">
-      <h1>Pay<span style={{color:"#3b82f6;"}}>Track</span></h1>
-      <h2>Descarga la base de datos que necesites</h2>
+            <div className="right">
+                <h1>Pay<span style={{ color: "#3b82f6;" }}>Track</span></h1>
+                <h2>Descarga la base de datos que necesites</h2>
 
-      <label htmlFor="buscar">Opciones de bases de datos disponibles para descargar</label>
-      <input type="text" id="buscar" className="search-box" placeholder="Ingresa el nombre de la base de datos que deseas descargar" />
+                <label htmlFor="buscar">Opciones de bases de datos disponibles para descargar</label>
+                <input type="text" id="buscar" className="search-box" placeholder="Ingresa el nombre de la base de datos que deseas descargar" />
 
-      <div className="options">
-        <div className="option">Colaboradores en general.</div>
-        <div className="option">Colaboradores del área logística y operativos.</div>
-        <div className="option">Colaboradores del área administrativa.</div>
-        <div className="option">Colaboradores del área de mantenimiento.</div>
-        <div className="option">Colaboradores del área comercial.</div>
-      </div>
+                <div className="options">
+                    <div className="option">Colaboradores en general.</div>
+                    <div className="option">Colaboradores del área logística y operativos.</div>
+                    <div className="option">Colaboradores del área administrativa.</div>
+                    <div className="option">Colaboradores del área de mantenimiento.</div>
+                    <div className="option">Colaboradores del área comercial.</div>
+                </div>
 
-      <button className="btn">Descargar</button>
+                <Link to="/">
+                    <button className="btn">Descargar</button>
+                </Link>
 
-      <div className="footer">
-        ¿No encuentras lo que necesitas? <strong>Comunícate ahora con soporte técnico.</strong>
-      </div>
-    </div>
-  </div>
+                <div className="footer">
+                    ¿No encuentras lo que necesitas? <strong>Comunícate ahora con soporte técnico.</strong>
+                </div>
+            </div>
+        </div >
 
     )
 }

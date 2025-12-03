@@ -1,4 +1,5 @@
 import './login.css'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
     return (
@@ -19,7 +20,10 @@ const LoginPage = () => {
                             <input type="password" id="password" placeholder="Ingresa tu contraseña" required />
                         </div>
 
-                        <button className="btn" type="submit">Iniciar sesión</button>
+                        <Link to="/createuser">
+                            <button className="btn" type="submit">Iniciar sesión</button>
+                        </Link>
+
                     </form>
 
                     <div className="social-login">
