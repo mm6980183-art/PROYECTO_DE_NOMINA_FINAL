@@ -1,43 +1,52 @@
-import './createuser.css'
+import './usermanager.css'
 import { Link } from 'react-router-dom'
 
-const CreateUser = () => {
+const UserNamerPage = () => {
   return (
     <div className="container">
       <div className="left"></div>
 
       <div className="right">
         <h1>Pay<span style={{ color: "#3b82f6;" }}>Track</span></h1>
-        <h2>Creación de usuarios</h2>
+        <h2>Gestión de usuarios</h2>
 
         <form>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Nombre Completo</label>
             <input type="email" id="email" placeholder="Ingresa tu email" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="nombre">Nombres y apellidos</label>
+            <label htmlFor="nombre">Cédula</label>
             <input type="text" id="nombre" placeholder="Ingresa tu nombre completo" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="cedula">Cédula</label>
+            <label htmlFor="cedula">Teléfono</label>
             <input type="text" id="cedula" placeholder="Ingresa tu número de cédula" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="fecha">Fecha de nacimiento</label>
+            <label htmlFor="fecha">Área de desempeño</label>
             <input type="text" id="fecha" placeholder="DIA/MES/AÑO" />
           </div>
 
           <div className="form-group">
-            <label>Permisos de usuario - Selecciona los permisos del usuario que estás creando</label>
+            <label htmlFor="fecha">Cargo</label>
+            <input type="text" id="fecha" placeholder="DIA/MES/AÑO" />
+          </div>
+
+          <div className="form-group">
+            <label>Actualización de información de usuarios – Gestión y eliminación de registros</label>
             <div className="permisos">
-              <div className="permiso-btn">Usuario maestro</div>
-              <div className="permiso-btn">Usuario general</div>
+              <div className="permiso-btn">Actualizar usuario</div>
+              <div className="permiso-btn">Eliminar usuario</div>
             </div>
           </div>
+
+          <Link to="/downloads">
+            <button className="btn" type="submit">Consultar usuario</button>
+          </Link>
 
 
           <Link to="/downloads">
@@ -45,12 +54,9 @@ const CreateUser = () => {
           </Link>
 
         </form>
-
-        <div className="footer">
-          ¿Tienes problemas? <strong>Comunícate ahora con soporte técnico.</strong>
-        </div>
+        
       </div>
     </div>
   )
 }
-export default CreateUser
+export default UserNamerPage

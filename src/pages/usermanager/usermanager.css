@@ -29,6 +29,8 @@ body {
 h1 {
     font-size: 36px;
     margin-bottom: 5px;
+    padding-top: 0px;
+    padding-top: 150px
 }
 
 h2 {
@@ -39,7 +41,7 @@ h2 {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 label {
@@ -50,7 +52,7 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 600px;
     padding: 12px;
     border-radius: 6px;
     border: none;
@@ -82,7 +84,7 @@ input {
 }
 
 .btn {
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
     padding: 14px;
     background: linear-gradient(to right, #3b82f6, #2563eb);

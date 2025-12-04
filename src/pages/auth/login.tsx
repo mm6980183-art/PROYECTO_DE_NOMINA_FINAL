@@ -20,7 +20,7 @@ const LoginPage = () => {
                             <input type="password" id="password" placeholder="Ingresa tu contraseña" required />
                         </div>
 
-                        <Link to="/createuser">
+                        <Link to="/usermanager">
                             <button className="btn" type="submit">Iniciar sesión</button>
                         </Link>
 

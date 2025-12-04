@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import './App.css'
 import LoginPage from './pages/auth/login'
-import CreateUser from './pages/user/createuser'
+import usermanager from './pages/usermanager/usermanager'
 import DownloadsPage from './pages/downloads/downloads'
 import { Route, Routes } from 'react-router-dom'
+import UserNamerPage from './pages/usermanager/usermanager'
 
 function App() {
 return (
 <Routes>
   <Route path='/' element={<LoginPage/>}/>
-  <Route path='/createuser' element={<CreateUser/>}/>
+  <Route path='/usermanager' element={<UserNamerPage/>}/>
   <Route path='/downloads' element={<DownloadsPage/>}/>
 </Routes>
 );
@@ -17,29 +18,4 @@ return (
 
 export default App
 
-// function App() {
-//   const [count, setCount] = useState(0)
-//   return (
-//   <LoginPage></LoginPage>
-//   )
-// }
-
-// export default App
-
-// function App() {
-//   const [count, setCount] = useState(0)
-// return (
-// <CreateUser></CreateUser>
-// )
-// }
-
-// export default App
-
-// function App() {
-//     const [count, setCount] = useState(0)
-//   return (
-//     <DownloadsPage></DownloadsPage>
-//   )
-// }
-
-// export default App
+// import| { useState } from 'react'
