@@ -1,7 +1,34 @@
+import axios from 'axios';
 import './usermanager.css'
 import { Link } from 'react-router-dom'
 
 const UserNamerPage = () => {
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault(); // evita que se recargue la página
+
+    const formData = new FormData(e.target);
+
+    const data = {
+      NombreCompleto: formData.get("nombre"),
+      Cedula: formData.get("cedula"),
+      Telefono: formData.get("telefono"),
+      AreadeDesempeño: formData.get("area"),
+      Cargo: formData.get("cargo"),
+    };
+
+    console.log("Datos del formulario:", data);
+    axios.post('http://localhost:3000/users', data)
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  };
+
+
+
   return (
     <div className="container">
       <div className="left"></div>
@@ -10,51 +37,39 @@ const UserNamerPage = () => {
         <h1>Pay<span style={{ color: "#3b82f6;" }}>Track</span></h1>
         <h2>Gestión de usuarios</h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Nombre Completo</label>
-            <input type="email" id="email" placeholder="Ingresa tu email" />
+            <label htmlFor="nombre">Nombre Completo</label>
+            <input type="nombre" id="nombre" name="nombre" placeholder="Ingresa tu nombre" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="nombre">Cédula</label>
-            <input type="text" id="nombre" placeholder="Ingresa tu nombre completo" />
+            <label htmlFor="cedula">Cédula</label>
+            <input type="text" id="cedula" name="cedula" placeholder="Ingresa tu cedula completo" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="cedula">Teléfono</label>
-            <input type="text" id="cedula" placeholder="Ingresa tu número de cédula" />
+            <label htmlFor="telefono">Teléfono</label>
+            <input type="text" id="telefono" name="telefono" placeholder="Ingresa tu número de cédula" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="fecha">Área de desempeño</label>
-            <input type="text" id="fecha" placeholder="DIA/MES/AÑO" />
+            <label htmlFor="area">Área de desempeño</label>
+            <input type="text" id="area" name="area" placeholder="Área de desempeño" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="fecha">Cargo</label>
-            <input type="text" id="fecha" placeholder="DIA/MES/AÑO" />
+            <label htmlFor="cargo">Cargo</label>
+            <input type="text" id="cargo" name="cargo" placeholder="Cargo" />
           </div>
 
-          <div className="form-group">
-            <label>Actualización de información de usuarios – Gestión y eliminación de registros</label>
-            <div className="permisos">
-              <div className="permiso-btn">Actualizar usuario</div>
-              <div className="permiso-btn">Eliminar usuario</div>
-            </div>
-          </div>
-
-          <Link to="/downloads">
-            <button className="btn" type="submit">Consultar usuario</button>
+          <button className="btn" type="submit">Crear usuario</button>
+          <Link to="/list-users">
+            <button className="btn" type="submit">Ver usuarios</button>
           </Link>
-
-
-          <Link to="/downloads">
-            <button className="btn" type="submit">Crear usuario</button>
-          </Link>
-
         </form>
-        
+
+
       </div>
     </div>
   )

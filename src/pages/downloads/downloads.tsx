@@ -1,3 +1,4 @@
+import TitleHeader from '../../components/title'
 import './downloads.css'
 import { Link } from 'react-router-dom'
 
@@ -7,7 +8,7 @@ const DownloadsPage = () => {
             <div className="left"></div>
 
             <div className="right">
-                <h1>Pay<span style={{ color: "#3b82f6;" }}>Track</span></h1>
+                <TitleHeader />
                 <h2>Descarga la base de datos que necesites</h2>
 
                 <label htmlFor="buscar">Opciones de bases de datos disponibles para descargar</label>
