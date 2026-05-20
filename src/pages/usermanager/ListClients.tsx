@@ -25,10 +25,46 @@ const ListClientsPage = () => {
             getUsersList();
             return
         }
-        axios.get(`http://localhost:3000/users/${idColaboradores}`)
+
+        // Si el valor no es un número, interpretarlo como búsqueda por nombre
+        const maybeId = Number(idColaboradores);
+        if (Number.isNaN(maybeId)) {
+            // Si ya tenemos usuarios cargados, filtrar localmente
+            if (users && users.length > 0) {
+                const filtered = users.filter((u: any) => {
+                    return u.NombreCompleto && u.NombreCompleto.toLowerCase().includes(String(idColaboradores).toLowerCase())
+                })
+                if (filtered.length === 1) {
+                    setUserFilter(filtered[0])
+                } else {
+                    setUserFilter(null)
+                    setUsers(filtered)
+                }
+                return
+            }
+
+            // Si no tenemos usuarios en memoria, pedir la lista completa y filtrar
+            axios.get('http://localhost:3000/users')
+                .then(response => {
+                    const filtered = response.data.filter((u: any) => u.NombreCompleto && u.NombreCompleto.toLowerCase().includes(String(idColaboradores).toLowerCase()))
+                    if (filtered.length === 1) {
+                        setUserFilter(filtered[0])
+                    } else {
+                        setUserFilter(null)
+                        setUsers(filtered)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+            return
+        }
+
+        // Si es un id numérico, solicitar por id
+        axios.get(`http://localhost:3000/users/${maybeId}`)
             .then(response => {
                 setUserFilter(response.data)
-                // setUsers(response.data)
                 console.log(response.data)
             })
             .catch(error => {

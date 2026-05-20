@@ -1,10 +1,12 @@
 import './login.css'
 import { Link } from 'react-router-dom'
+import ConnectionTest from '../../components/ConnectionTest'
 
 const LoginPage = () => {
     return (
         <div className="container">
             <div className="right">
+                <ConnectionTest />
                 <div className="login-box">
                     <h1>Pay<span style={{ color: "#3b82f6" }}>Track</span></h1>
                     <p>Bienvenido de vuelta</p>
