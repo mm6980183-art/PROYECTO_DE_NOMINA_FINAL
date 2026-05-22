@@ -52,7 +52,7 @@ const UserNamerPage = () => {
           </Link>
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/dashboard')}
             className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
           >
             Volver al Dashboard
@@ -115,13 +115,29 @@ const UserNamerPage = () => {
 
         <label className="block text-sm text-slate-700">
           Cargo
-          <input
-            type="text"
-            id="cargo"
-            name="cargo"
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
-            placeholder="Cargo"
-          />
+          <div className="relative mt-2">
+            <select
+              id="cargo"
+              name="cargo"
+              className="appearance-none w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecciona un cargo
+              </option>
+              <option value="Desarrollador Frontend">Desarrollador Frontend</option>
+              <option value="Desarrollador Backend">Desarrollador Backend</option>
+              <option value="Ingeniero DevOps">Ingeniero DevOps</option>
+              <option value="Arquitecto de Software">Arquitecto de Software</option>
+              <option value="Analista QA">Analista QA</option>
+              <option value="Líder de Tecnología">Líder de Tecnología</option>
+            </select>
+            <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-500">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.292l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+              </svg>
+            </span>
+          </div>
         </label>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

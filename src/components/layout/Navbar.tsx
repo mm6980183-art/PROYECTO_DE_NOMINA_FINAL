@@ -7,6 +7,7 @@ const Navbar = () => {
 
   const routeTitles: Record<string, string> = {
     '/dashboard': 'Dashboard de nómina',
+    '/dashboard/nomina': 'Gestión de nómina',
     '/usermanager': 'Gestión de usuarios',
     '/list-users': 'Listado de usuarios',
     '/downloads': 'Descargas'

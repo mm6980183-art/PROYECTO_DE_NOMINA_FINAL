@@ -99,7 +99,7 @@ const ListClientsPage = () => {
                         <button className="inline-flex items-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800" onClick={getUsersList}>
                             Cargar usuarios
                         </button>
-                        <button className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50" onClick={() => navigate('/')}>Volver al Dashboard</button>
+                        <button className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50" onClick={() => navigate('/dashboard')}>Volver al Dashboard</button>
                     </div>
                 </div>
 

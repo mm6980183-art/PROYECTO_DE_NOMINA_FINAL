@@ -18,7 +18,7 @@ export const listUsers = (req, res) => {
 
 export const getUser = (req, res) => {
   const id = Number(req.params.id)
-  const user = mockUsers.find(u => u.idColaboradores === id)
+  const user = mockUsers.find(u => u.idColaboradores === id || u.Cedula === req.params.id)
   if (!user) return res.status(404).json({ status: 'error', message: 'Usuario no encontrado' })
   res.json(user)
 }

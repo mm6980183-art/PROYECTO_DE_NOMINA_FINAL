@@ -4,7 +4,7 @@ const menuItems = [
   { label: 'Dashboard', to: '/dashboard' },
   { label: 'Usuarios', to: '/usermanager' },
   { label: 'Descargas', to: '/downloads' },
-  { label: 'Reportes', to: '/dashboard' }
+  { label: 'Nómina', to: '/dashboard/nomina' }
 ]
 
 const Sidebar = () => {
