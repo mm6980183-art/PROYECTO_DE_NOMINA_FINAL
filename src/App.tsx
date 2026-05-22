@@ -1,19 +1,29 @@
 import './App.css'
 import LoginPage from './pages/auth/login'
+import ForgotPasswordPage from './pages/auth/forgotPassword'
 import DownloadsPage from './pages/downloads/downloads'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import UserNamerPage from './pages/usermanager/usermanager'
 import ListClientsPage from './pages/usermanager/ListClients'
+import DashboardPage from './pages/dashboard/DashboardPage'
+import { AuthProvider } from './context/AuthContext'
+import ProtectedRoute from './components/layout/ProtectedRoute'
+import DashboardLayout from './components/layout/DashboardLayout'
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<LoginPage />} />
-      <Route path='/list-users' element={<ListClientsPage />} />
-      <Route path='/usermanager' element={<UserNamerPage />} />
-      <Route path='/downloads' element={<DownloadsPage />} />
-    </Routes>
-  );
+    <AuthProvider>
+      <Routes>
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+        <Route path='/dashboard' element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path='/list-users' element={<ProtectedRoute><DashboardLayout><ListClientsPage /></DashboardLayout></ProtectedRoute>} />
+        <Route path='/usermanager' element={<ProtectedRoute><DashboardLayout><UserNamerPage /></DashboardLayout></ProtectedRoute>} />
+        <Route path='/downloads' element={<ProtectedRoute><DashboardLayout><DownloadsPage /></DashboardLayout></ProtectedRoute>} />
+        <Route path='*' element={<Navigate to='/' replace />} />
+      </Routes>
+    </AuthProvider>
+  )
 }
 
 export default App

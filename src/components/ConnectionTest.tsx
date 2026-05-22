@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 
 const ConnectionTest = () => {
   const [status, setStatus] = useState<string>('Pendiente');
@@ -12,7 +12,7 @@ const ConnectionTest = () => {
     setResponse(null);
 
     try {
-      const result = await axios.get('http://localhost:3000/users', {
+      const result = await api.get('/', {
         timeout: 5000,
       });
       setStatus('✅ Conectado');
@@ -20,7 +20,7 @@ const ConnectionTest = () => {
     } catch (err: any) {
       setStatus('❌ Error de conexión');
       if (err.code === 'ECONNREFUSED') {
-        setError('No se puede conectar al servidor en localhost:3000. ¿Está ejecutándose?');
+        setError(`No se puede conectar al servidor en ${import.meta.env.VITE_API_BASE_URL || 'http://localhost:4002/api/v1'}. ¿Está ejecutándose?`);
       } else if (err.message === 'timeout of 5000ms exceeded') {
         setError('Timeout: El servidor tardó demasiado en responder');
       } else {

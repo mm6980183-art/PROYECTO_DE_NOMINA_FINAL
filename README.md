@@ -1,16 +1,68 @@
-# React + Vite
+# PayTrack - Módulo Dashboard de Nómina
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto contiene un frontend React con Vite y un backend Node.js/Express para un módulo Dashboard empresarial de nómina. La arquitectura está diseñada para escalabilidad, separación de responsabilidades y futuras integraciones.
 
-Currently, two official plugins are available:
+## Arquitectura general
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `backend/` — servidor Express modular, conexión MySQL, autenticación JWT y API REST para el dashboard.
+- `src/` — frontend React con rutas, contexto, componentes reutilizables y cliente Axios.
+- `public/` — activos estáticos.
+- `.claude/` — archivos de contexto para agentes IA.
 
-## React Compiler
+## Características del módulo Dashboard
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Autenticación con JWT.
+- Panel administrativo con estadísticas, reportes y estado del sistema.
+- Sidebar dinámico preparado para nuevos módulos.
+- Frontend responsive con TailwindCSS.
+- Backend desacoplado con controladores, servicios y modelos.
 
-## Expanding the ESLint configuration
+## Tecnología
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Frontend: React, Vite, TailwindCSS, React Router, Axios
+- Backend: Node.js, Express, MySQL (`mysql2`), JWT, bcryptjs
+- Arquitectura: Servicios, controladores, rutas, middlewares
+
+## Cómo ejecutar
+
+### Frontend
+
+```bash
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Ajusta las variables de entorno en backend/.env
+npm run dev
+```
+
+## Endpoints principales
+
+- `POST /api/v1/auth/login` — autenticación
+- `GET /api/v1/dashboard/summary` — métricas generales
+- `GET /api/v1/dashboard/reports` — reportes recientes
+- `GET /api/v1/dashboard/system-stats` — estado de módulos
+
+## Cómo agregar nuevos módulos
+
+1. Crea un nuevo subdominio en `backend/src/routes` y agrégalo a `backend/src/routes/index.js`.
+2. Añade un controlador en `backend/src/controllers`, un servicio en `backend/src/services` y un modelo en `backend/src/models`.
+3. En el frontend, crea una nueva página en `src/pages`, una entrada de navegación en `src/components/layout/Sidebar.tsx` y rutas en `src/App.tsx`.
+4. Utiliza `api/axiosConfig.ts` para consumir nuevos endpoints y `context/AuthContext.tsx` para proteger rutas.
+
+## Seguridad y producción
+
+- JWT todo el backend protegido con middleware de autenticación.
+- Manejo centralizado de errores en `backend/src/middlewares/errorMiddleware.js`.
+- Conexión MySQL a través de pool en `backend/src/config/db.js`.
+- Validación de credenciales en el servicio de autenticación.
+
+## Notas
+
+Este proyecto está preparado como base para un entorno académico y puede evolucionar hacia un sistema real gracias a su arquitectura modular y buenas prácticas.

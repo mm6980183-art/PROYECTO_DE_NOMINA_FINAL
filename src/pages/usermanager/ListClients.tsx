@@ -1,21 +1,26 @@
-import axios from 'axios';
+﻿import api from '../../api/axiosConfig';
 import TitleHeader from '../../components/title'
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom'
 
 const ListClientsPage = () => {
     const [users, setUsers] = useState([])
     const [userFilter, setUserFilter] = useState<any>(null)
+    const [message, setMessage] = useState<{ type: 'success'|'error'; text: string } | null>(null)
+    const navigate = useNavigate()
 
     const getUsersList = () => {
         setUserFilter(null);
-        axios.get('http://localhost:3000/users')
+        api.get('/users')
             .then(response => {
                 setUsers(response.data)
-                console.log(response.data)
+                setMessage({ type: 'success', text: 'Usuarios cargados correctamente.' })
+                setTimeout(() => setMessage(null), 3000)
             })
             .catch(error => {
                 console.log(error)
+                setMessage({ type: 'error', text: 'Error cargando usuarios.' })
+                setTimeout(() => setMessage(null), 3000)
             })
     }
 
@@ -26,10 +31,8 @@ const ListClientsPage = () => {
             return
         }
 
-        // Si el valor no es un número, interpretarlo como búsqueda por nombre
         const maybeId = Number(idColaboradores);
         if (Number.isNaN(maybeId)) {
-            // Si ya tenemos usuarios cargados, filtrar localmente
             if (users && users.length > 0) {
                 const filtered = users.filter((u: any) => {
                     return u.NombreCompleto && u.NombreCompleto.toLowerCase().includes(String(idColaboradores).toLowerCase())
@@ -43,8 +46,7 @@ const ListClientsPage = () => {
                 return
             }
 
-            // Si no tenemos usuarios en memoria, pedir la lista completa y filtrar
-            axios.get('http://localhost:3000/users')
+            api.get('/users')
                 .then(response => {
                     const filtered = response.data.filter((u: any) => u.NombreCompleto && u.NombreCompleto.toLowerCase().includes(String(idColaboradores).toLowerCase()))
                     if (filtered.length === 1) {
@@ -61,8 +63,7 @@ const ListClientsPage = () => {
             return
         }
 
-        // Si es un id numérico, solicitar por id
-        axios.get(`http://localhost:3000/users/${maybeId}`)
+        api.get(`/users/${maybeId}`)
             .then(response => {
                 setUserFilter(response.data)
                 console.log(response.data)
@@ -73,53 +74,72 @@ const ListClientsPage = () => {
     }
 
     const deleteUserById = (idColaboradores: number | string) => {
-        
-        axios.delete(`http://localhost:3000/users/${idColaboradores}`)
+        api.delete(`/users/${idColaboradores}`)
             .then(response => {
+                setMessage({ type: 'success', text: 'Usuario eliminado.' })
                 getUsersList();
+                setTimeout(() => setMessage(null), 3000)
             })
             .catch(error => {
                 console.log(error)
+                setMessage({ type: 'error', text: 'Error al eliminar usuario.' })
+                setTimeout(() => setMessage(null), 3000)
             })
     }
 
     return (
-        <div className="container">
-            <div className="left"></div>
+        <div className="max-w-6xl mx-auto space-y-6">
+            <div className="rounded-[32px] border border-slate-200 bg-white/95 p-8 shadow-xl shadow-slate-200/40">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-6">
+                    <div>
+                        <TitleHeader />
+                        <p className="mt-2 text-slate-500">Explora y administra usuarios con el mismo diseño limpio del dashboard.</p>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                        <button className="inline-flex items-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800" onClick={getUsersList}>
+                            Cargar usuarios
+                        </button>
+                        <button className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50" onClick={() => navigate('/')}>Volver al Dashboard</button>
+                    </div>
+                </div>
 
-            <div className="right">
-                <TitleHeader />
-                <h2>Descarga la base de datos que necesites</h2>
-                <button className='btn' onClick={getUsersList}>Cargar usuarios</button>
-                <input type="text" id="buscar" onChange={(text) => { getUserById(text.target.value) }} className="search-box" placeholder="Ingresa el nombre de la base de datos que deseas descargar" />
+                <div className="grid gap-4 sm:grid-cols-[1fr_auto] items-center">
+                    <input
+                        type="text"
+                        id="buscar"
+                        onChange={(text) => { getUserById(text.target.value) }}
+                        className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                        placeholder="Buscar por nombre o cédula"
+                    />
+                </div>
+
+                {message && (
+                    <div className={`mt-6 rounded-3xl border px-4 py-4 text-sm ${message.type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-rose-200 bg-rose-50 text-rose-700'}`}>
+                        {message.text}
+                    </div>
+                )}
+            </div>
+
+            <div className="space-y-4">
                 {
-                    !userFilter ?
-                        users.map((valores: any) => {
-                            console.log(valores)
-                            return <div key={valores.Cedula} onClick={() => { getUserById(valores.idColaboradores) }} style={{ padding: 10, borderWidth: 4, backgroundColor: 'red', marginBottom: 20, width: 600,position: 'relative' }}>
-                                <div style={{ position: 'absolute', right: 5, top: 5 }}>
-                                    <button className='btn' onClick={() => { deleteUserById(valores.idColaboradores) }}>Eliminar</button>
+                    (!userFilter ? users : [userFilter]).map((valores: any) => {
+                        return (
+                            <div key={valores.Cedula} onClick={() => { getUserById(valores.idColaboradores) }} className="group relative cursor-pointer rounded-[28px] border border-slate-200 bg-slate-50 p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                                <div className="absolute right-4 top-4">
+                                    <button className='inline-flex items-center rounded-2xl bg-rose-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-600' onClick={(e) => { e.stopPropagation(); deleteUserById(valores.idColaboradores) }}>Eliminar</button>
                                 </div>
-                                <h3>NOMBRE: {valores.NombreCompleto}</h3>
-                                <h3>CEDULA: {valores.Cedula}</h3>
-                                <h3>CARGO: {valores.Cargo}</h3>
-                                <h3>TELEFONO: {valores.Telefono}</h3>
+                                <div className="space-y-2">
+                                    <h3 className="text-lg font-semibold text-slate-900">{valores.NombreCompleto}</h3>
+                                    <p className="text-sm text-slate-500">Cédula: {valores.Cedula}</p>
+                                    <p className="text-sm text-slate-500">Cargo: {valores.Cargo}</p>
+                                    <p className="text-sm text-slate-500">Teléfono: {valores.Telefono}</p>
+                                </div>
                             </div>
-                        })
-                        :
-                        <div key={userFilter.Cedula} style={{ padding: 10, borderWidth: 4, backgroundColor: 'blue', marginBottom: 20, width: 600,position: 'relative' }}>
-                            <div style={{ position: 'absolute', right: 5, top: 5 }}>
-                                    <button className='btn' onClick={() => { deleteUserById(userFilter.idColaboradores) }}>Eliminar</button>
-                                </div>
-                            <h3>NOMBRE: {userFilter.NombreCompleto}</h3>
-                            <h3>CEDULA: {userFilter.Cedula}</h3>
-                            <h3>CARGO: {userFilter.Cargo}</h3>
-                            <h3>TELEFONO: {userFilter.Telefono}</h3>
-                        </div>
+                        )
+                    })
                 }
             </div>
-        </div >
-
+        </div>
     )
 }
 export default ListClientsPage
