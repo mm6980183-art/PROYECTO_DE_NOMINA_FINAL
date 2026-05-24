@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename)
 dotenv.config({ path: path.resolve(__dirname, '../../../.env'), override: true })
 
 const config = {
-  port: Number(process.env.PORT || 4000),
+  port: Number(process.env.PORT || 4002),
   apiPrefix: process.env.API_PREFIX || '/api/v1',
   jwtSecret: process.env.JWT_SECRET || 'default_jwt_secret',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '2h',

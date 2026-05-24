@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getDashboardSummary, getRecentReports, getSystemStats } from '../api/dashboardApi'
+import { getDashboardSummary, getRecentReports, getSystemStats, getPayrollTrend } from '../api/dashboardApi'
 
 export const useDashboardData = () => {
   const [summary, setSummary] = useState(null)
   const [reports, setReports] = useState([])
   const [stats, setStats] = useState([])
+  const [payrollTrend, setPayrollTrend] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -12,14 +13,16 @@ export const useDashboardData = () => {
     const load = async () => {
       setLoading(true)
       try {
-        const [summaryData, reportData, statsData] = await Promise.all([
+        const [summaryData, reportData, statsData, trendData] = await Promise.all([
           getDashboardSummary(),
           getRecentReports(),
-          getSystemStats()
+          getSystemStats(),
+          getPayrollTrend()
         ])
         setSummary(summaryData)
         setReports(reportData)
         setStats(statsData)
+        setPayrollTrend(trendData)
       } catch (err) {
         setError(err)
       } finally {
@@ -30,5 +33,5 @@ export const useDashboardData = () => {
     load()
   }, [])
 
-  return { summary, reports, stats, loading, error }
+  return { summary, reports, stats, payrollTrend, loading, error }
 }

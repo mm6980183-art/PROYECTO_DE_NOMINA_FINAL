@@ -13,8 +13,8 @@ const getStoredToken = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(getStoredUser)
-  const [token, setToken] = useState(getStoredToken)
+  const [user, setUser] = useState(() => getStoredUser())
+  const [token, setToken] = useState(() => getStoredToken())
   const navigate = useNavigate()
 
 

@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
+  const [connectionStatus, setConnectionStatus] = useState('Pendiente')
   const { login } = useAuth()
 
   const handleSubmit = async (event) => {
@@ -17,7 +18,6 @@ const LoginPage = () => {
 
     try {
       const response = await loginRequest({ email, password })
-      // `loginRequest` already returns the `{ user, token }` payload
       login(response)
     } catch (err) {
       const message = err.response?.data?.message || 'Credenciales inválidas'
@@ -28,7 +28,7 @@ const LoginPage = () => {
   return (
     <div className="container">
       <div className="right">
-        <ConnectionTest />
+        <ConnectionTest onStatusChange={setConnectionStatus} />
         <div className="login-box">
           <h1>Pay<span style={{ color: '#3b82f6' }}>Track</span></h1>
           <p>Bienvenido de vuelta</p>
@@ -59,9 +59,16 @@ const LoginPage = () => {
             </div>
 
             {error && <p className="error-message">{error}</p>}
+          {connectionStatus !== '✅ Conectado' && (
+            <p className="error-message" style={{ marginTop: '10px' }}>
+              No hay conexión con el servidor. Espera un momento y vuelve a intentar.
+            </p>
+          )}
 
-            <button className="btn" type="submit">Iniciar sesión</button>
-          </form>
+          <button className="btn" type="submit" disabled={connectionStatus !== '✅ Conectado'}>
+            Iniciar sesión
+          </button>
+        </form>
 
           <div className="social-login">
             <p>O inicia sesión con:</p>

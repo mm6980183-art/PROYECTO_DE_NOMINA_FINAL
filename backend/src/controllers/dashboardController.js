@@ -1,4 +1,4 @@
-import { fetchDashboardSummary, fetchRecentReports, fetchSystemStats } from '../services/dashboardService.js'
+import { fetchDashboardSummary, fetchRecentReports, fetchSystemStats, fetchPayrollTrend } from '../services/dashboardService.js'
 
 export const getSummary = async (req, res, next) => {
   try {
@@ -22,6 +22,15 @@ export const getSystemStats = async (req, res, next) => {
   try {
     const stats = await fetchSystemStats()
     res.json({ status: 'success', data: stats })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getPayrollTrend = async (req, res, next) => {
+  try {
+    const trend = await fetchPayrollTrend()
+    res.json({ status: 'success', data: trend })
   } catch (error) {
     next(error)
   }

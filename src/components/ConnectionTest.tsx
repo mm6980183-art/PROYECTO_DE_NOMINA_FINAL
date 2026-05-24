@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../api/axiosConfig';
 
-const ConnectionTest = () => {
-  const [status, setStatus] = useState<string>('Pendiente');
-  const [error, setError] = useState<string>('');
-  const [response, setResponse] = useState<any>(null);
+const ConnectionTest = ({ onStatusChange }) => {
+  const [status, setStatus] = useState('Pendiente');
+  const [error, setError] = useState('');
+  const [response, setResponse] = useState(null);
 
   const testConnection = async () => {
     setStatus('Probando...');
@@ -17,23 +17,41 @@ const ConnectionTest = () => {
       });
       setStatus('✅ Conectado');
       setResponse(result.data);
-    } catch (err: any) {
+    } catch (err) {
+      const message = err?.code === 'ECONNREFUSED'
+        ? 'No se puede conectar al backend. Asegúrate de ejecutar el servidor con `cd backend && npm run dev`.'
+        : err?.message === 'timeout of 5000ms exceeded'
+        ? 'Timeout: el backend tardó demasiado en responder.'
+        : err?.response?.status === 404
+        ? 'La API está en línea pero la ruta raíz no existe. Revisa el backend.'
+        : err?.message || 'Error desconocido al conectar con el backend.';
       setStatus('❌ Error de conexión');
-      if (err.code === 'ECONNREFUSED') {
-        setError(`No se puede conectar al servidor en ${import.meta.env.VITE_API_BASE_URL || 'http://localhost:4002/api/v1'}. ¿Está ejecutándose?`);
-      } else if (err.message === 'timeout of 5000ms exceeded') {
-        setError('Timeout: El servidor tardó demasiado en responder');
-      } else {
-        setError(err.message || 'Error desconocido');
-      }
+      setError(message);
     }
   };
 
+  useEffect(() => {
+    testConnection();
+  }, []);
+
+  useEffect(() => {
+    if (onStatusChange) {
+      onStatusChange(status);
+    }
+  }, [status, onStatusChange]);
+
+  useEffect(() => {
+    if (status === '✅ Conectado') return undefined;
+
+    const intervalId = setInterval(testConnection, 5000);
+    return () => clearInterval(intervalId);
+  }, [status]);
+
   return (
     <div style={{ padding: '20px', margin: '20px', border: '2px solid #ccc', borderRadius: '8px', backgroundColor: '#f5f5f5' }}>
-      <h3>🔧 Test de Conexión a Base de Datos</h3>
+      <h3>🔧 Test de Conexión a API</h3>
       <button onClick={testConnection} style={{ padding: '10px 20px', marginBottom: '10px', cursor: 'pointer' }}>
-        Probar Conexión
+        Volver a intentar
       </button>
       
       <div style={{ marginTop: '10px' }}>

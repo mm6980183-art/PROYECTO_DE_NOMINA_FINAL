@@ -1,4 +1,4 @@
-import { getSummaryMetrics, getRecentReports, getSystemStats } from '../models/dashboardModel.js'
+import { getSummaryMetrics, getRecentReports, getSystemStats, getPayrollTrend } from '../models/dashboardModel.js'
 
 export const fetchDashboardSummary = async () => {
   return getSummaryMetrics()
@@ -10,4 +10,8 @@ export const fetchRecentReports = async () => {
 
 export const fetchSystemStats = async () => {
   return getSystemStats()
+}
+
+export const fetchPayrollTrend = async () => {
+  return getPayrollTrend()
 }

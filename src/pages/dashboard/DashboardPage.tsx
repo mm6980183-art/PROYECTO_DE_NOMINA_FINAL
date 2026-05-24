@@ -1,4 +1,4 @@
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import StatCard from '../../components/ui/StatCard'
@@ -8,24 +8,24 @@ import WidgetPanel from '../../components/ui/WidgetPanel'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 import { useDashboardData } from '../../hooks/useDashboardData'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
-
-const metrics = {
-  labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
-  datasets: [
-    {
-      label: 'Nóminas procesadas',
-      data: [78, 102, 95, 125, 115, 130],
-      borderColor: '#2563eb',
-      backgroundColor: 'rgba(37, 99, 235, 0.16)',
-      tension: 0.35,
-      fill: true
-    }
-  ]
-}
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
 const DashboardPage = () => {
-  const { summary, reports, stats, loading, error } = useDashboardData()
+  const { summary, reports, stats, payrollTrend, loading, error } = useDashboardData()
+
+  const metrics = {
+    labels: payrollTrend?.map((item: any) => item.month) || [],
+    datasets: [
+      {
+        label: 'Nóminas procesadas',
+        data: payrollTrend?.map((item: any) => item.count) || [],
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37, 99, 235, 0.16)',
+        tension: 0.35,
+        fill: true
+      }
+    ]
+  }
 
   if (loading) {
     return <LoadingSpinner />
@@ -37,8 +37,8 @@ const DashboardPage = () => {
         <section className="grid gap-5 xl:grid-cols-4 lg:grid-cols-2">
           <StatCard title="Total empleados" value={summary?.totalEmployees ?? '-'} subtitle="Personal activo en el sistema" icon="👥" />
           <StatCard title="Nóminas procesadas" value={summary?.payrollProcessed ?? '-'} subtitle="Documentos liquidados" icon="💼" />
-          <StatCard title="Deducciones" value={`$${summary?.totalDeductions ?? 0}`} subtitle="Total en deducciones" icon="📉" />
-          <StatCard title="Prestaciones sociales" value={`$${summary?.totalBenefits ?? 0}`} subtitle="Costos de prestaciones" icon="💰" />
+          <StatCard title="Deducciones" value={`$${summary?.totalDeductions?.toLocaleString('es-CO') ?? 0}`} subtitle="Total en deducciones" icon="📉" />
+          <StatCard title="Prestaciones sociales" value={`$${summary?.totalBenefits?.toLocaleString('es-CO') ?? 0}`} subtitle="Costos de prestaciones" icon="💰" />
         </section>
 
         <section className="grid gap-5 lg:grid-cols-3">
